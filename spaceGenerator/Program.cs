@@ -12,35 +12,73 @@ namespace spaceGenerator
         static void Main(string[] args)
         {
             List<string> printOrder = new List<string>();
-            int input = -1;
-            bool numberOnly = false;
+            int input = 0;
+            int howMany = 0;
+            int counter = 0;
+            List<int> sizes = new List<int>();
 
             //testing 
             try
             {
                 //input = Convert.ToInt32(Console.ReadLine());
-                //Get input from user. Can not be Negative and must be an integer. 
-                Console.Write("Enter the size of the star: ");
+                //Get how many stars from user. Can not be Negative and must be an integer. 
+                Console.Write("How many stars would you like to create?  ");
                 do
                 {
-                    if(!int.TryParse(Console.ReadLine(),out input))
+                    // for reference: int.TryParse returns True if an integer is input. false if anthing else 
+                    // this protects from char from being inputed and throwing and exception
+                    if(!int.TryParse(Console.ReadLine(),out howMany))
                     {
-                        Console.WriteLine("Please enter a positive number: ");
+                        Console.WriteLine("Please enter a number larger than 0: ");
                     }
-                    if(input<0)
+                    if(howMany < 0)
                     {
                             Console.WriteLine("Please enter a number larger than 0: ");
-                        if (!int.TryParse(Console.ReadLine(), out input))
+                        if (!int.TryParse(Console.ReadLine(), out howMany))
                         {
                             Console.WriteLine("Please enter a number larger than 0: ");
                         }
                     }
-                } while (input <= 0);
+                } while (howMany <= 0);
+
+                //Get the sizes of the stars and place them into a list of sizes
+                while (counter < howMany)
+                {
+                    Console.WriteLine("Please enter the size of star number " + (counter + 1));
+                    do
+                    {
+                        if (!int.TryParse(Console.ReadLine(), out input))
+                        {
+                            Console.WriteLine("Please enter a number larger than 0: ");
+                        }
+                        if (input < 0)
+                        {
+                            Console.WriteLine("Please enter a number larger than 0: ");
+                            if (!int.TryParse(Console.ReadLine(), out input))
+                            {
+                                Console.WriteLine("Please enter a number larger than 0: ");
+                            }
+                        }
+                    } while (input <= 0);
+                    sizes.Add(input);
+                    counter++;
+                }
+                // pass the sizes to the star generator. 
+                for(int c = 0; c < sizes.Count(); c++)
+                {
+                    //debugging
+                    //Console.WriteLine(sizes[c]);
+                    printOrder.Add(PrintStars(sizes[c]));
+                }
+
+                Console.ReadLine();
 
                 Console.WriteLine();
-
-                printOrder.Add(PrintStars(input));
-                printOrder.Add(PrintStars(input));
+                Console.Clear();
+                
+                //old keeping for reference
+                //printOrder.Add(PrintStars(input));
+                //printOrder.Add(PrintStars(input));
 
                 for(int c = 0;c < printOrder.Count; c++)
                 {
@@ -70,6 +108,10 @@ namespace spaceGenerator
             int growingSpace = 1;
             string savedStar = null;
 
+            // padding for the leading spaces for its location
+            // might have to rethink how i go about this. 
+            Random random = new Random();
+            int xpadding = random.Next(50);
 
             split = input / 2;
             leadingSpace = split;
