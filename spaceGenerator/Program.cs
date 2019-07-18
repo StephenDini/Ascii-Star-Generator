@@ -13,6 +13,7 @@ namespace spaceGenerator
         {
             List<string> printOrder = new List<string>();
 
+            //testing 
             try
             {
 
@@ -34,7 +35,7 @@ namespace spaceGenerator
             
             
         }
-
+        // This will ask for a size of star and save it inside of a string
         static string PrintStars()
         {
 
@@ -56,7 +57,8 @@ namespace spaceGenerator
             split = input / 2;
             leadingSpace = split;
             spaceR = split - difference;
-
+            
+            // odd inputs (n) produced too many stars but the same size of the n-1. 
             if (input % 2 != 0)
                 input -= 1;
 
@@ -67,7 +69,7 @@ namespace spaceGenerator
                 //Console.ReadLine();
 
                 space = x;
-
+                // if x is the start and end only have one star. 
                 if (x == 0 || x == input)
                 {
                     if (leadingSpace <= 0)
@@ -82,7 +84,7 @@ namespace spaceGenerator
                     savedStar += "*\n";
                     leadingSpace--;
                 }
-                else
+                else// 2 stars with spaces in between but shrinking amount of spaces. 
                 {
 
                     if (x > split)
@@ -123,7 +125,7 @@ namespace spaceGenerator
                         //Console.WriteLine("*");
                         savedStar += "*\n";
                     }// start of the spaces inserted
-                    else
+                    else // 2 stars with spaces growing in between 
                     {
                         for (int c = 0; c < leadingSpace; c++)
                         {
@@ -153,7 +155,7 @@ namespace spaceGenerator
                         leadingSpace--;
                     }
                 }
-
+                //if x is the same as half reduce the growing spaces by 2
                 if (x == split)
                     growingSpace -= 2;
 
