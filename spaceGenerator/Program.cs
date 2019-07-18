@@ -12,13 +12,35 @@ namespace spaceGenerator
         static void Main(string[] args)
         {
             List<string> printOrder = new List<string>();
+            int input = -1;
+            bool numberOnly = false;
 
             //testing 
             try
             {
+                //input = Convert.ToInt32(Console.ReadLine());
+                //Get input from user. Can not be Negative and must be an integer. 
+                Console.Write("Enter the size of the star: ");
+                do
+                {
+                    if(!int.TryParse(Console.ReadLine(),out input))
+                    {
+                        Console.WriteLine("Please enter a positive number: ");
+                    }
+                    if(input<0)
+                    {
+                            Console.WriteLine("Please enter a number larger than 0: ");
+                        if (!int.TryParse(Console.ReadLine(), out input))
+                        {
+                            Console.WriteLine("Please enter a number larger than 0: ");
+                        }
+                    }
+                } while (input <= 0);
 
-                printOrder.Add(PrintStars());
-                printOrder.Add(PrintStars());
+                Console.WriteLine();
+
+                printOrder.Add(PrintStars(input));
+                printOrder.Add(PrintStars(input));
 
                 for(int c = 0;c < printOrder.Count; c++)
                 {
@@ -36,23 +58,18 @@ namespace spaceGenerator
             
         }
         // This will ask for a size of star and save it inside of a string
-        static string PrintStars()
+        static string PrintStars(int input)
         {
 
             int x = 0;
             int space = 0;
             int split = 0;
             int spaceR = 0;
-            int input = 0;
             int leadingSpace = 0;
             int difference = 1;
             int growingSpace = 1;
             string savedStar = null;
 
-
-            Console.Write("Enter the size of the star: ");
-            input = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
 
             split = input / 2;
             leadingSpace = split;
