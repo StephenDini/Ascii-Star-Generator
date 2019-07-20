@@ -134,7 +134,7 @@ namespace spaceGenerator
             for(int c = 0; c < sizes.Count(); c++)
             {
                 int startLocX = rand.Next(0,99);
-                int startLocY = rand.Next(0,29);
+                int startLocY = rand.Next(0,22);
                 int newLocX = startLocX;
                 int newLocY = startLocY; 
                 int half = 0;
@@ -288,7 +288,7 @@ namespace spaceGenerator
             guyY++;
             guyX--;
             starScape[guyY, guyX] = '-';
-            guyX++;
+             guyX++;
             starScape[guyY, guyX] = '|';
             guyX++;
             starScape[guyY, guyX] = '-';
