@@ -291,7 +291,11 @@ namespace spaceGenerator
              guyX++;
             starScape[guyY, guyX] = '|';
             guyX++;
-            starScape[guyY, guyX] = '-';
+            try
+            {
+                starScape[guyY, guyX] = '-';
+            }
+            catch (IndexOutOfRangeException) { }
             guyY++;
             starScape[guyY, guyX] = '\\';
             guyX -= 2;
