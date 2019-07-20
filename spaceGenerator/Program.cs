@@ -16,8 +16,10 @@ namespace spaceGenerator
             int howMany = 0;
             int counter = 0;
             List<int> sizes = new List<int>();
-
+            //char test1 = (char) 230;
             //testing 
+            //Console.WriteLine(test1);
+            //Console.ReadLine();
             try
             {
                 //input = Convert.ToInt32(Console.ReadLine());
@@ -264,6 +266,39 @@ namespace spaceGenerator
                      *      1 star no space         = 1
             */
 
+            //add ground
+            for (int c0 = 25; c0 < 30; c0++)
+            {
+                for (int c1 = 0; c1 < 100; c1++)
+                {
+                    starScape[c0, c1] = (char)230;
+                }
+            }
+            // make a little guy
+            /*  
+             *  o
+             * -|-
+             * / \
+             * 
+             */
+            int guyX = rand.Next(0, 99);
+            int guyY = 22;
+
+            starScape[guyY, guyX] = '0';
+            guyY++;
+            guyX--;
+            starScape[guyY, guyX] = '-';
+            guyX++;
+            starScape[guyY, guyX] = '|';
+            guyX++;
+            starScape[guyY, guyX] = '-';
+            guyY++;
+            starScape[guyY, guyX] = '\\';
+            guyX -= 2;
+            starScape[guyY, guyX] = '/';
+
+
+
             // Turn the character array into a string
             for (int c0 = 0; c0 < 30; c0++)
             {
@@ -276,8 +311,6 @@ namespace spaceGenerator
                     }
                 }
             }
-
-
 
             return completedScape;
         }
