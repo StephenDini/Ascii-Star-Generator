@@ -22,55 +22,70 @@ namespace spaceGenerator
             {
                 //input = Convert.ToInt32(Console.ReadLine());
                 //Get how many stars from user. Can not be Negative and must be an integer. 
-                Console.Write("How many stars would you like to create?  ");
+                Console.Write("How many stars would you like to create? [10 max] ");
                 do
                 {
                     // for reference: int.TryParse returns True if an integer is input. false if anthing else 
                     // this protects from char from being inputed and throwing and exception
                     if(!int.TryParse(Console.ReadLine(),out howMany))
                     {
-                        Console.WriteLine("Please enter a number larger than 0: ");
+                        Console.Write("Please enter a number larger than 0 and less than 11: ");
                     }
-                    if(howMany < 0)
+                    else if(howMany <= 0 || howMany > 10)
                     {
-                            Console.WriteLine("Please enter a number larger than 0: ");
-                        if (!int.TryParse(Console.ReadLine(), out howMany))
-                        {
-                            Console.WriteLine("Please enter a number larger than 0: ");
-                        }
+                        Console.Write("Please enter a number larger than 0 and less than 11: ");
                     }
-                } while (howMany <= 0);
+                } while (howMany <= 0 || howMany > 10 );
+
+                Console.WriteLine();
 
                 //Get the sizes of the stars and place them into a list of sizes
                 while (counter < howMany)
                 {
-                    Console.WriteLine("Please enter the size of star number " + (counter + 1));
+                    Console.Write("Please enter the size of star number " + (counter + 1) + ": [max 20] ");
+
                     do
                     {
                         if (!int.TryParse(Console.ReadLine(), out input))
                         {
-                            Console.WriteLine("Please enter a number larger than 0: ");
+                            Console.Write("Please enter a number larger than 0 and less than 21: ");
                         }
-                        if (input < 0)
+                        else if(input <= 0 || input > 20)
                         {
-                            Console.WriteLine("Please enter a number larger than 0: ");
-                            if (!int.TryParse(Console.ReadLine(), out input))
-                            {
-                                Console.WriteLine("Please enter a number larger than 0: ");
-                            }
+                            Console.Write("Please enter a number larger than 0 and less than 21: ");
                         }
-                    } while (input <= 0);
+                    } while (input <= 0 || input >20);
+
                     sizes.Add(input);
                     counter++;
                 }
+
+                //testing
+                Console.Clear();
+
+                Console.WriteLine("begining Test");
+                Console.ReadLine();
+                Console.Clear();
+
+                string test = null;
+                test = createStarScape(sizes);
+
+                Console.WriteLine(test);
+                Console.WriteLine("End Test");
+
+                Console.ReadLine();
+                Console.Clear();
+
+                // end testing
+
                 // pass the sizes to the star generator. 
-                for(int c = 0; c < sizes.Count(); c++)
+                for (int c = 0; c < sizes.Count(); c++)
                 {
                     //debugging
                     //Console.WriteLine(sizes[c]);
                     printOrder.Add(PrintStars(sizes[c]));
                 }
-
+                Console.WriteLine("Press enter to continue...");
                 Console.ReadLine();
 
                 Console.WriteLine();
@@ -95,6 +110,168 @@ namespace spaceGenerator
             
             
         }
+        // creating the stars in a char array. 
+        static string createStarScape(List<int> sizes)
+        {
+            string completedScape = null;
+            Random randX = new Random(100);
+            Random randY = new Random(30);
+
+
+            // setup for the character array 
+            char[,] starScape = new char[30,100];
+            for(int c0 = 0; c0 < 30; c0++)
+            {
+                for(int c1 = 0; c1 < 100; c1++)
+                {
+                    starScape[c0, c1] = ' ';
+
+                }
+            }
+
+            // for loop to set up star creation
+            for(int c = 0; c < sizes.Count(); c++)
+            {
+                int startLocX = randX.Next(99);
+                int startLocY = randY.Next(29);
+                int newLocX = startLocX;
+                int newLocY = startLocY; 
+                int half = 0;
+                int thisSize = 0;
+                int growingSpace = 1;
+                bool shrink = false;
+                int checkSize = 0;
+                if (sizes[c] % 2 !=0)
+                {
+                    thisSize = (sizes[c] - 1);
+                }
+                else
+                {
+                    thisSize = sizes[c];
+                }
+
+                for (int x0 = 0; x0 < thisSize; x0++)
+                {
+
+
+                    try
+                    {
+                        starScape[startLocY, startLocX] = '*';
+                    }
+                    catch { }
+
+                    while (checkSize < thisSize)
+                    {
+                        if (shrink)
+                        {
+                            newLocX += 1;
+                        }
+                        else
+                        {
+                            newLocX -= 1;
+                        }
+
+                        newLocY += 1;
+                        int x1 = 1;
+
+                        try
+                        {
+                            starScape[newLocY, newLocX] = '*';
+                        }
+                        catch (IndexOutOfRangeException)
+                        { }
+
+                        while (x1 <= growingSpace)
+                        {
+                            try
+                            {
+                                starScape[(newLocY), (newLocX + x1)] = ' ';
+                            }
+                            catch (IndexOutOfRangeException)
+                            { }
+
+                            x1++;
+                        }
+                        if (shrink)
+                        {
+                            if (growingSpace == 1)
+                            {
+                                try
+                                {
+                                    starScape[(newLocY), (newLocX + x1)] = '*';
+                                }
+                                catch (IndexOutOfRangeException)
+                                { }
+                                //break;
+                            }
+                            growingSpace -= 2;
+                            
+                        }
+                        else
+                        {
+                            growingSpace += 2;
+                        }
+
+                        if (growingSpace == (thisSize + 1))
+                        {
+                            //debuging
+                            //Console.WriteLine(growingSpace + " = " + sizes[c]);
+                            shrink = true;
+                            growingSpace -= 4;
+                        }
+                        if ((checkSize + 1 ) != thisSize)
+                        {
+                            try
+                            {
+                                starScape[(newLocY), (newLocX + x1)] = '*';
+                            }
+                            catch (IndexOutOfRangeException)
+                            { }
+                        }
+
+                        checkSize += 1;
+                    }
+                    try
+                    {
+                        starScape[(startLocY + thisSize), startLocX] = '*';
+                    }
+                    catch (IndexOutOfRangeException)
+                    { }
+
+
+            }
+
+            }
+
+            /*example for above
+                     *      1 star no space         = 1
+                    * *     1 star 1 space 1 star   = 3
+                   *   *    1 star 3 space 1 star   = 5
+                  *     *   1 star 5 space 1 star   = 7
+                   *   *    1 star 3 space 1 star   = 5
+                    * *     1 star 1 space 1 star   = 3
+                     *      1 star no space         = 1
+            */
+
+            // Turn the character array into a string
+            for (int c0 = 0; c0 < 30; c0++)
+            {
+                for(int c1 = 0; c1 < 100; c1++)
+                {
+                    completedScape += starScape[c0, c1];
+                    if(c1 == 99)
+                    {
+                        completedScape += "\n";
+                    }
+                }
+            }
+
+
+
+            return completedScape;
+        }
+
+        // This code is being reworked on.
         // This will ask for a size of star and save it inside of a string
         static string PrintStars(int input)
         {
