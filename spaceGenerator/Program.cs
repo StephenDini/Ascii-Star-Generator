@@ -71,6 +71,7 @@ namespace spaceGenerator
                 test = createStarScape(sizes);
 
                 Console.WriteLine(test);
+                Console.ReadLine();
                 Console.WriteLine("End Test");
 
                 Console.ReadLine();
@@ -141,7 +142,8 @@ namespace spaceGenerator
                 int growingSpace = 1;
                 bool shrink = false;
                 int checkSize = 0;
-                if (sizes[c] % 2 !=0)
+
+                if (sizes[c] % 2 !=0 && sizes[c] !=1)
                 {
                     thisSize = (sizes[c] - 1);
                 }
@@ -153,48 +155,82 @@ namespace spaceGenerator
                 for (int x0 = 0; x0 < thisSize; x0++)
                 {
 
-
-                    try
+                    if (thisSize == 1)
                     {
-                        starScape[startLocY, startLocX] = '*';
-                    }
-                    catch { }
-
-                    while (checkSize < thisSize)
-                    {
-                        if (shrink)
-                        {
-                            newLocX += 1;
-                        }
-                        else
-                        {
-                            newLocX -= 1;
-                        }
-
-                        newLocY += 1;
-                        int x1 = 1;
-
                         try
                         {
-                            starScape[newLocY, newLocX] = '*';
+                            starScape[startLocY, startLocX] = '*';
                         }
-                        catch (IndexOutOfRangeException)
-                        { }
-
-                        while (x1 <= growingSpace)
+                        catch { }
+                    }
+                    else
+                    {
+                        try
                         {
+                            starScape[startLocY, startLocX] = '*';
+                        }
+                        catch { }
+
+                        while (checkSize < thisSize)
+                        {
+                            if (shrink)
+                            {
+                                newLocX += 1;
+                            }
+                            else
+                            {
+                                newLocX -= 1;
+                            }
+
+                            newLocY += 1;
+                            int x1 = 1;
+
                             try
                             {
-                                starScape[(newLocY), (newLocX + x1)] = ' ';
+                                starScape[newLocY, newLocX] = '*';
                             }
                             catch (IndexOutOfRangeException)
                             { }
 
-                            x1++;
-                        }
-                        if (shrink)
-                        {
-                            if (growingSpace == 1)
+                            while (x1 <= growingSpace)
+                            {
+                                try
+                                {
+                                    starScape[(newLocY), (newLocX + x1)] = ' ';
+                                }
+                                catch (IndexOutOfRangeException)
+                                { }
+
+                                x1++;
+                            }
+                            if (shrink)
+                            {
+                                if (growingSpace == 1)
+                                {
+                                    try
+                                    {
+                                        starScape[(newLocY), (newLocX + x1)] = '*';
+                                    }
+                                    catch (IndexOutOfRangeException)
+                                    { }
+                                    //break;
+                                }
+                                growingSpace -= 2;
+
+                            }
+                            else
+                            {
+                                growingSpace += 2;
+                            }
+
+                            if (growingSpace == (thisSize + 1))
+                            {
+                                //debuging
+                                //Console.WriteLine(growingSpace + " = " + sizes[c]);
+                                shrink = true;
+                                growingSpace -= 4;
+                            }
+                            if ((checkSize + 1) != thisSize)
                             {
                                 try
                                 {
@@ -202,41 +238,18 @@ namespace spaceGenerator
                                 }
                                 catch (IndexOutOfRangeException)
                                 { }
-                                //break;
                             }
-                            growingSpace -= 2;
-                            
-                        }
-                        else
-                        {
-                            growingSpace += 2;
+
+                            checkSize += 1;
                         }
 
-                        if (growingSpace == (thisSize + 1))
+                        try
                         {
-                            //debuging
-                            //Console.WriteLine(growingSpace + " = " + sizes[c]);
-                            shrink = true;
-                            growingSpace -= 4;
+                            starScape[(startLocY + thisSize), startLocX] = '*';
                         }
-                        if ((checkSize + 1 ) != thisSize)
-                        {
-                            try
-                            {
-                                starScape[(newLocY), (newLocX + x1)] = '*';
-                            }
-                            catch (IndexOutOfRangeException)
-                            { }
-                        }
-
-                        checkSize += 1;
+                        catch (IndexOutOfRangeException)
+                        { }
                     }
-                    try
-                    {
-                        starScape[(startLocY + thisSize), startLocX] = '*';
-                    }
-                    catch (IndexOutOfRangeException)
-                    { }
 
 
             }
