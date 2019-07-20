@@ -115,9 +115,7 @@ namespace spaceGenerator
         static string createStarScape(List<int> sizes)
         {
             string completedScape = null;
-            Random randX = new Random(100);
-            Random randY = new Random(30);
-
+            Random rand = new Random();
 
             // setup for the character array 
             char[,] starScape = new char[30,100];
@@ -133,8 +131,8 @@ namespace spaceGenerator
             // for loop to set up star creation
             for(int c = 0; c < sizes.Count(); c++)
             {
-                int startLocX = randX.Next(99);
-                int startLocY = randY.Next(29);
+                int startLocX = rand.Next(0,99);
+                int startLocY = rand.Next(0,29);
                 int newLocX = startLocX;
                 int newLocY = startLocY; 
                 int half = 0;
